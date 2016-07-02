@@ -2,10 +2,9 @@ package deploy
 
 import "github.com/op/go-logging"
 
-//Stage load from config/deploy/<stage_name>.toml and config/deploy.toml
+//Stage load from config/stages/<name>.toml
 type Stage struct {
-	//The name of the application.
-	Name string `toml:"application"`
+	Name string `toml:"-"`
 	//The path on the remote server where the application should be deployed.
 	//default "/var/www/{{.Name}}"
 	To string `toml:"deploy_to"`

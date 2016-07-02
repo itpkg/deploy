@@ -12,3 +12,17 @@ var FLAG_ROLES = cli.StringSliceFlag{
 	Usage:  "roles filter, like: 'app,web'",
 	EnvVar: "ROLES",
 }
+
+var FLAG_STAGE = cli.StringFlag{
+	Name:   "stage,s",
+	Value:  "test",
+	Usage:  "stage name like: production, development, test",
+	EnvVar: "STAGE",
+}
+
+var FLAG_TASK = cli.StringFlag{
+	Name:   "task,t",
+	Value:  "uname",
+	Usage:  "task's name",
+	EnvVar: "TASK",
+}

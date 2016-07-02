@@ -4,8 +4,7 @@ import (
 	"log"
 
 	"github.com/itpkg/deploy"
-	_ "github.com/itpkg/deploy/cmd/generate"
-	_ "github.com/itpkg/deploy/cmd/init"
+	_ "github.com/itpkg/deploy/cmd/base"
 	_ "github.com/itpkg/deploy/cmd/run"
 	_ "github.com/itpkg/deploy/scm/git"
 )
