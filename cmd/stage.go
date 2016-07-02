@@ -1,4 +1,4 @@
-package deploy
+package cmd
 
 import "github.com/op/go-logging"
 
@@ -31,10 +31,11 @@ type Stage struct {
 	Keep uint `toml:"keep_releases"`
 	//Temporary directory used during deployments to store data.
 	//default /tmp
-	Tmp string `toml:"tmp"`
-	//Log level
-	//default debug
-	Level string `toml:"log_level"`
+	Tmp   string `toml:"tmp"`
+	Debug bool   `toml:"debug"`
+
+	//split hosts by roles
+	Roles map[string][]string `toml:"roles"`
 
 	Logger *logging.Logger `toml:"-"`
 }

@@ -1,4 +1,4 @@
-package deploy
+package cmd
 
 import "github.com/urfave/cli"
 
@@ -22,7 +22,7 @@ var FLAG_STAGE = cli.StringFlag{
 
 var FLAG_TASK = cli.StringFlag{
 	Name:   "task,t",
-	Value:  "uname",
+	Value:  "hello",
 	Usage:  "task's name",
 	EnvVar: "TASK",
 }

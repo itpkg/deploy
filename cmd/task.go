@@ -1,4 +1,4 @@
-package deploy
+package cmd
 
 //Task load from config/tasks/name>.toml
 type Task struct {

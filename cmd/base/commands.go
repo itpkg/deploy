@@ -14,12 +14,12 @@ func init() {
 			Usage:   "generate stage/task config files",
 			Flags: []cli.Flag{
 				cli.StringFlag{
-					Name:  deploy.FLAG_STAGE.Name,
-					Usage: deploy.FLAG_STAGE.Usage,
+					Name:  cmd.FLAG_STAGE.Name,
+					Usage: cmd.FLAG_STAGE.Usage,
 				},
 				cli.StringFlag{
-					Name:  deploy.FLAG_TASK.Name,
-					Usage: deploy.FLAG_TASK.Usage,
+					Name:  cmd.FLAG_TASK.Name,
+					Usage: cmd.FLAG_TASK.Usage,
 				},
 			},
 			Action: generate,

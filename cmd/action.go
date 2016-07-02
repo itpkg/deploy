@@ -1,7 +1,9 @@
-package deploy
+package cmd
 
 import (
+	"fmt"
 	"os"
+	"path"
 	"time"
 
 	"github.com/op/go-logging"
@@ -11,6 +13,12 @@ import (
 //Action command action
 func Action(fn func(*cli.Context, *Stage) error) cli.ActionFunc {
 	return func(c *cli.Context) error {
+		var st Stage
+		if err := Read(
+			path.Join(STAGES, fmt.Sprintf("%s%s", c.String("stage"), EXT)),
+			&st); err != nil {
+			return err
+		}
 
 		lfd, err := os.OpenFile(
 			time.Now().Format("2006-01-02.log"),
@@ -44,11 +52,6 @@ func Action(fn func(*cli.Context, *Stage) error) cli.ActionFunc {
 
 		l := logging.MustGetLogger(c.App.Name)
 		l.Infof("=== BEGIN ===")
-		l.Infof("hosts: %q", c.StringSlice("hosts"))
-		l.Infof("roles: %q", c.StringSlice("roles"))
-
-		//TODO load stage
-		var st Stage
 		st.Logger = l
 		err = fn(c, &st)
 		l.Infof("=== END ===")

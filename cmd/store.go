@@ -1,4 +1,4 @@
-package base
+package cmd
 
 import (
 	"os"
@@ -6,6 +6,12 @@ import (
 
 	"github.com/BurntSushi/toml"
 )
+
+//Read read object from file
+func Read(n string, v interface{}) error {
+	_, err := toml.DecodeFile(n, v)
+	return err
+}
 
 //Write write object to toml file
 func Write(n string, v interface{}) error {
