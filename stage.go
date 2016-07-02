@@ -1,5 +1,11 @@
 package main
 
+//Role role
+type Role struct {
+	Name  string
+	Hosts []string
+}
+
 //Stage load from config/deploy/<stage_name>.toml and config/deploy.toml
 type Stage struct {
 	//The name of the application.
