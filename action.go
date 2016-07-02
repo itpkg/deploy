@@ -1,8 +1,6 @@
-package main
+package deploy
 
 import (
-	"errors"
-	"log"
 	"os"
 	"time"
 
@@ -11,7 +9,7 @@ import (
 )
 
 //Action command action
-func Action(fn func(*cli.Context, *logging.Logger) error) cli.ActionFunc {
+func Action(fn func(*cli.Context, *Stage) error) cli.ActionFunc {
 	return func(c *cli.Context) error {
 
 		lfd, err := os.OpenFile(
@@ -46,42 +44,14 @@ func Action(fn func(*cli.Context, *logging.Logger) error) cli.ActionFunc {
 
 		l := logging.MustGetLogger(c.App.Name)
 		l.Infof("=== BEGIN ===")
-		l.Infof("stage: %s", c.Args()[0])
-		l.Infof("task: %s", c.Args()[1])
 		l.Infof("hosts: %q", c.StringSlice("hosts"))
 		l.Infof("roles: %q", c.StringSlice("roles"))
-		err = fn(c, l)
+
+		//TODO load stage
+		var st Stage
+		st.Logger = l
+		err = fn(c, &st)
 		l.Infof("=== END ===")
 		return err
-	}
-}
-
-func main() {
-	app := cli.NewApp()
-	app.Name = "rma"
-	app.Usage = "Remote multi-server automation tool"
-	app.Version = "v20160702"
-	app.Flags = []cli.Flag{
-		cli.StringSliceFlag{
-			Name:   "hosts",
-			Usage:  "hosts filter, like: 'deploy@host1.com,deploy@host2.com'",
-			EnvVar: "HOSTS",
-		},
-		cli.StringSliceFlag{
-			Name:   "roles",
-			Usage:  "roles filter, like: 'app,web'",
-			EnvVar: "ROLES",
-		},
-	}
-	app.Action = Action(func(c *cli.Context, l *logging.Logger) error {
-
-		if len(c.Args()) != 2 {
-			return errors.New("usage: rma stage_name task_name")
-		}
-		return nil
-	})
-
-	if err := app.Run(os.Args); err != nil {
-		log.Fatal(err)
 	}
 }

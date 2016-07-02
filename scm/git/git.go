@@ -3,7 +3,7 @@ package git
 import (
 	"fmt"
 
-	"github.com/itpkg/rma/scm"
+	"github.com/itpkg/deploy/scm"
 )
 
 //Git git

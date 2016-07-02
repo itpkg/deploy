@@ -1,10 +1,6 @@
-package main
+package deploy
 
-//Role role
-type Role struct {
-	Name  string
-	Hosts []string
-}
+import "github.com/op/go-logging"
 
 //Stage load from config/deploy/<stage_name>.toml and config/deploy.toml
 type Stage struct {
@@ -40,4 +36,6 @@ type Stage struct {
 	//Log level
 	//default debug
 	Level string `toml:"log_level"`
+
+	Logger *logging.Logger `toml:"-"`
 }

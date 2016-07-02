@@ -13,30 +13,30 @@ rma init
 ### Deploy task
 
 ```
-rma generage -s production -n deploy
-rma production deploy
+rma g -s production -n deploy
+rma r -s production -n deploy
 ```
 
 #### By host filter
 
 ```
-HOSTS=server1,server2 rma production deploy
+HOSTS=server1,server2 rma r -s production -n deploy
 ```
 
 OR
 
 ```
-rma --hosts=server1,server2 production deploy
+rma r --hosts=server1,server2 -s production -n deploy
 ```
 
 #### By role filter
 
 ```
-ROLES=app,web rma production deploy
+ROLES=app,web rma r -s production -n deploy
 ```
 
 OR
 
 ```
-rma --roles=app,web production deploy
+rma r --roles=app,web -s production -n deploy
 ```

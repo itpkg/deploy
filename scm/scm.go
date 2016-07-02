@@ -15,8 +15,10 @@ type Scm interface {
 var plugins = make(map[string]Scm)
 
 //Register register scm
-func Register(s Scm) {
-	plugins[strings.ToLower(reflect.TypeOf(s).Name())] = s
+func Register(scms ...Scm) {
+	for _, s := range scms {
+		plugins[strings.ToLower(reflect.TypeOf(s).Name())] = s
+	}
 }
 
 //Get get scm
