@@ -21,6 +21,7 @@ func Action(fn func(*cli.Context, *Stage) error) cli.ActionFunc {
 			&st); err != nil {
 			return err
 		}
+		st.Name = c.String("stage")
 
 		lfd, err := os.OpenFile(
 			time.Now().Format("2006-01-02.log"),

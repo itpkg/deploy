@@ -1,5 +1,8 @@
-package: github.com/itpkg/rma
+package: github.com/itpkg/deploy
 import:
-- package: github.com/urfave/cli
-- package: github.com/op/go-logging
 - package: github.com/BurntSushi/toml
+- package: github.com/op/go-logging
+- package: github.com/urfave/cli
+- package: golang.org/x/crypto
+  subpackages:
+  - ssh

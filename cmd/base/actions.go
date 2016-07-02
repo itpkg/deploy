@@ -52,8 +52,9 @@ func generate(c *cli.Context) error {
 				Keep: 5,
 				Tmp:  os.TempDir(),
 				Roles: map[string][]string{
-					"web": []string{"www.host1.com", "www.host2.com"},
-					"app": []string{"app.host1.com", "app.host2.com"},
+					"web": []string{"deploy@www.host1.com", "deploy@www.host2.com"},
+					"app": []string{"deploy@app.host1.com", "deploy@app.host2.com"},
+					"db":  []string{"deploy@db.host1.com", "deploy@db.host2.com"},
 				},
 				Debug: true,
 			}); err != nil {
@@ -70,7 +71,7 @@ func generate(c *cli.Context) error {
 				Name:   tn,
 				Roles:  []string{"web", "app"},
 				Hosts:  []string{"deploy@host1.com", "deploy@host2.com"},
-				Script: []string{"uname -a", "whoami"},
+				Script: []string{"uname -a", "whoami", "echo {{.Name}}"},
 			},
 		); err != nil {
 			return err
