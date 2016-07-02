@@ -1,0 +1,5 @@
+package: github.com/itpkg/rma
+import:
+- package: github.com/urfave/cli
+- package: github.com/op/go-logging
+- package: github.com/BurntSushi/toml

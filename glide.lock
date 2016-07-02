@@ -1,0 +1,10 @@
+hash: 942888fb2240eb6d9da39a4bcba2e66c917538e257f2458ca5244226769fe342
+updated: 2016-07-02T07:45:39.535349295-07:00
+imports:
+- name: github.com/BurntSushi/toml
+  version: f0aeabca5a127c4078abb8c8d64298b147264b55
+- name: github.com/op/go-logging
+  version: 970db520ece77730c7e4724c61121037378659d9
+- name: github.com/urfave/cli
+  version: 1efa31f08b9333f1bd4882d61f9d668a70cd902e
+testImports: []
