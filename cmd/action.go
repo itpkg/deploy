@@ -2,9 +2,12 @@ package cmd
 
 import (
 	"fmt"
+	"io/ioutil"
 	"os"
 	"path"
 	"time"
+
+	"golang.org/x/crypto/ssh"
 
 	"github.com/itpkg/deploy/store"
 	"github.com/op/go-logging"
@@ -42,7 +45,7 @@ func Action(fn func(*cli.Context, *Stage) error) cli.ActionFunc {
 		bkd2 := logging.AddModuleLevel(
 			logging.NewBackendFormatter(
 				logging.NewLogBackend(lfd, "", 0),
-				logging.MustStringFormatter(`%{time:2006-01-02 15:04:05.000} %{level:.4s} %{message}`)),
+				logging.MustStringFormatter(`%{time:15:04:05.000} %{level:.4s} %{message}`)),
 		)
 
 		logging.SetBackend(
@@ -58,6 +61,20 @@ func Action(fn func(*cli.Context, *Stage) error) cli.ActionFunc {
 		l := logging.MustGetLogger(c.App.Name)
 		l.Infof("=== BEGIN ===")
 		st.Logger = l
+
+		//load ssh keys
+		for _, key := range st.Keys {
+			buf, er := ioutil.ReadFile(key)
+			if er != nil {
+				return er
+			}
+			sig, er := ssh.ParsePrivateKey(buf)
+			if er != nil {
+				return er
+			}
+			st.Signers = append(st.Signers, sig)
+		}
+
 		err = fn(c, &st)
 		l.Infof("=== END ===")
 		return err

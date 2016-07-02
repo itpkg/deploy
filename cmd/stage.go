@@ -3,6 +3,7 @@ package cmd
 import (
 	"github.com/itpkg/deploy/store"
 	"github.com/op/go-logging"
+	"golang.org/x/crypto/ssh"
 )
 
 //Stage load from config/stages/<name>.toml
@@ -39,7 +40,9 @@ type Stage struct {
 
 	//split hosts by roles
 	Roles map[string][]string `toml:"roles"`
+	Keys  []string            `toml:"keys"`
 
-	Logger *logging.Logger `toml:"-"`
-	Store  store.Store     `toml:"-"`
+	Logger  *logging.Logger `toml:"-"`
+	Store   store.Store     `toml:"-"`
+	Signers []ssh.Signer    `toml:"-"`
 }

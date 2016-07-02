@@ -3,6 +3,7 @@ package base
 import (
 	"fmt"
 	"os"
+	"os/user"
 	"path"
 	"path/filepath"
 	"time"
@@ -32,6 +33,10 @@ func generate(c *cli.Context) error {
 	sn := c.String("stage")
 	tn := c.String("task")
 	st := store.New(c.String("format"))
+	user, err := user.Current()
+	if err != nil {
+		return err
+	}
 
 	if sn != "" {
 		fn := path.Join(cmd.STAGES, fmt.Sprintf("%s%s", sn, st.Ext()))
@@ -55,6 +60,9 @@ func generate(c *cli.Context) error {
 					"web": []string{"deploy@www.host1.com", "deploy@www.host2.com"},
 					"app": []string{"deploy@app.host1.com", "deploy@app.host2.com"},
 					"db":  []string{"deploy@db.host1.com", "deploy@db.host2.com"},
+				},
+				Keys: []string{
+					path.Join(user.HomeDir, ".ssh", "id_rsa"),
 				},
 				Debug: true,
 			}); err != nil {

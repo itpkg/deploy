@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"fmt"
 	"html/template"
-	"os"
 	"path"
 	"sort"
 	"strings"
@@ -20,22 +19,19 @@ func Exec(stage *cmd.Stage, host string, scripts ...string) error {
 	if len(ss) != 2 {
 		return fmt.Errorf("bad host: %s", host)
 	}
+	if strings.Index(ss[1], ":") == -1 {
+		ss[1] += ":22"
+	}
 	con, err := ssh.Dial("tcp", ss[1], &ssh.ClientConfig{
 		User: ss[0],
-		//TODO
-		// Auth: []ssh.AuthMethod{
-		// 	ssh.Password("yourpassword"),
-		// },
+		Auth: []ssh.AuthMethod{
+			ssh.PublicKeys(stage.Signers...),
+			//ssh.Password("yourpassword"),
+		},
 	})
 	if err != nil {
 		return err
 	}
-	ses, err := con.NewSession()
-	if err != nil {
-		return err
-	}
-	defer ses.Close()
-	ses.Stdout = os.Stdout
 
 	for _, s := range scripts {
 		//parse template
@@ -47,11 +43,19 @@ func Exec(stage *cmd.Stage, host string, scripts ...string) error {
 		if err = tpl.Execute(&buf, stage); err != nil {
 			return err
 		}
-		stage.Logger.Debugf("%s: %s", host, buf.Bytes())
 
+		ses, err := con.NewSession()
+		if err != nil {
+			return err
+		}
+		defer ses.Close()
+		var out bytes.Buffer
+		//ses.Stdout = os.Stdout
+		ses.Stdout = &out
 		if err = ses.Run(buf.String()); err != nil {
 			return err
 		}
+		stage.Logger.Debugf("%s: %s\n%s", host, buf.String(), out.String())
 	}
 	return nil
 }
@@ -69,7 +73,7 @@ func run(c *cli.Context, s *cmd.Stage) error {
 	//hosts
 	hosts := c.StringSlice("hosts")
 	roles := c.StringSlice("roles")
-	s.Logger.Infof("task: %s", task.Name)
+	s.Logger.Infof("task: %s@%s", task.Name, s.Name)
 	s.Logger.Infof("roles: %q", roles)
 	s.Logger.Infof("hosts: %q", hosts)
 	if len(hosts) == 0 {
@@ -110,7 +114,7 @@ func run(c *cli.Context, s *cmd.Stage) error {
 	}
 	sort.Strings(hosts)
 
-	s.Logger.Debugf("hosts: %q", hosts)
+	s.Logger.Debugf("ordered hosts: %q", hosts)
 	for _, h := range hosts {
 		if err := Exec(s, h, task.Script...); err != nil {
 			return err
