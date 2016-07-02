@@ -1,6 +1,9 @@
 package cmd
 
-import "github.com/op/go-logging"
+import (
+	"github.com/itpkg/deploy/store"
+	"github.com/op/go-logging"
+)
 
 //Stage load from config/stages/<name>.toml
 type Stage struct {
@@ -38,4 +41,5 @@ type Stage struct {
 	Roles map[string][]string `toml:"roles"`
 
 	Logger *logging.Logger `toml:"-"`
+	Store  store.Store     `toml:"-"`
 }

@@ -16,8 +16,8 @@ func Exec(host string, scripts ...string) error {
 func run(c *cli.Context, s *cmd.Stage) error {
 	var task cmd.Task
 	tn := c.String("task")
-	if err := cmd.Read(
-		path.Join(cmd.TASKS, fmt.Sprintf("%s%s", tn, cmd.EXT)),
+	if err := s.Store.Read(
+		path.Join(cmd.TASKS, fmt.Sprintf("%s%s", tn, s.Store.Ext())),
 		&task); err != nil {
 		return err
 	}

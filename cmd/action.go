@@ -6,6 +6,7 @@ import (
 	"path"
 	"time"
 
+	"github.com/itpkg/deploy/store"
 	"github.com/op/go-logging"
 	"github.com/urfave/cli"
 )
@@ -14,8 +15,9 @@ import (
 func Action(fn func(*cli.Context, *Stage) error) cli.ActionFunc {
 	return func(c *cli.Context) error {
 		var st Stage
-		if err := Read(
-			path.Join(STAGES, fmt.Sprintf("%s%s", c.String("stage"), EXT)),
+		st.Store = store.New(c.String("format"))
+		if err := st.Store.Read(
+			path.Join(STAGES, fmt.Sprintf("%s%s", c.String("stage"), st.Store.Ext())),
 			&st); err != nil {
 			return err
 		}
@@ -30,25 +32,27 @@ func Action(fn func(*cli.Context, *Stage) error) cli.ActionFunc {
 		}
 		defer lfd.Close()
 
-		level := logging.DEBUG
-
 		bkd1 := logging.AddModuleLevel(
 			logging.NewBackendFormatter(
 				logging.NewLogBackend(os.Stderr, "", 0),
 				logging.MustStringFormatter(`%{color}%{time:2006-01-02 15:04:05.000} ▶ %{level:.4s} %{color:reset} %{message}`)),
 		)
-		bkd1.SetLevel(level, "")
 
 		bkd2 := logging.AddModuleLevel(
 			logging.NewBackendFormatter(
 				logging.NewLogBackend(lfd, "", 0),
 				logging.MustStringFormatter(`%{time:2006-01-02 15:04:05.000} %{level:.4s} %{message}`)),
 		)
-		bkd2.SetLevel(level, "")
+
 		logging.SetBackend(
 			bkd1,
 			bkd2,
 		)
+
+		if !st.Debug {
+			bkd1.SetLevel(logging.INFO, "")
+			bkd2.SetLevel(logging.INFO, "")
+		}
 
 		l := logging.MustGetLogger(c.App.Name)
 		l.Infof("=== BEGIN ===")

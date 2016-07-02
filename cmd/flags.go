@@ -13,6 +13,13 @@ var FLAG_ROLES = cli.StringSliceFlag{
 	EnvVar: "ROLES",
 }
 
+var FLAG_FORMAT = cli.StringFlag{
+	Name:   "format,f",
+	Value:  "toml",
+	Usage:  "file format, like: toml, yaml",
+	EnvVar: "STAGE",
+}
+
 var FLAG_STAGE = cli.StringFlag{
 	Name:   "stage,s",
 	Value:  "test",
