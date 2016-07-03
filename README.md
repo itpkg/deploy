@@ -5,7 +5,9 @@ Remote multi-server automation tool
 ## Example
 
 ```
-go get github.com/itpkg/cap
+export PATH=$GOPATH/bin:$PATH
+go get -u github.com/itpkg/cap
+which cap
 cap -h
 ```
 

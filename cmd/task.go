@@ -6,4 +6,5 @@ type Task struct {
 	Hosts  []string `toml:"hosts"`
 	Roles  []string `toml:"roles"`
 	Script []string `toml:"script"`
+	Deploy bool     `toml:"deploy"`
 }
