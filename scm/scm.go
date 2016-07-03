@@ -1,15 +1,14 @@
 package scm
 
 import (
+	"fmt"
 	"reflect"
 	"strings"
 )
 
 //Scm the Source Control Management used
 type Scm interface {
-	Clone(repo, dir string) string
-	Fetch() string
-	Checkout(branch string) string
+	Clone() []string
 }
 
 var plugins = make(map[string]Scm)
@@ -17,11 +16,16 @@ var plugins = make(map[string]Scm)
 //Register register scm
 func Register(scms ...Scm) {
 	for _, s := range scms {
-		plugins[strings.ToLower(reflect.TypeOf(s).Name())] = s
+		n := strings.ToLower(reflect.Indirect(reflect.ValueOf(s)).Type().Name())
+		plugins[n] = s
 	}
 }
 
 //Get get scm
-func Get(n string) Scm {
-	return plugins[n]
+func Get(n string) (Scm, error) {
+	s, o := plugins[n]
+	if o {
+		return s, nil
+	}
+	return nil, fmt.Errorf("bad name %s", n)
 }

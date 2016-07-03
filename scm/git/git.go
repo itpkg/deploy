@@ -1,28 +1,18 @@
 package git
 
-import (
-	"fmt"
-
-	"github.com/itpkg/deploy/scm"
-)
+import "github.com/itpkg/deploy/scm"
 
 //Git git
 type Git struct {
 }
 
 //Clone clone
-func (p *Git) Clone(repo, dir string) string {
-	return fmt.Sprintf("git clone %s %s", repo, dir)
-}
-
-//Fetch fetch
-func (p *Git) Fetch() string {
-	return "git fetch"
-}
-
-//Checkout checkout
-func (p *Git) Checkout(branch string) string {
-	return fmt.Sprintf("git checkout -b %s", branch)
+func (p *Git) Clone() []string {
+	return []string{
+		"if [ ! -d '{{.To}}/repo' ]; then git clone {{.Repo}} {{.To}}/repo && cd {{.To}}/repo && git checkout -b {{.Branch}} && git branch --set-upstream-to=origin/{{.Branch}} {{.Branch}}; fi",
+		"cd {{.To}}/repo && git pull",
+		"git clone --depth 1 --branch {{.Branch}} file://{{.To}}/repo {{.To}}/{{.Version}}",
+	}
 }
 
 func init() {

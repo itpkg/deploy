@@ -20,7 +20,10 @@ func list(p string) cli.ActionFunc {
 				return err
 			}
 			name := info.Name()
-			st := store.New(c.String("format"))
+			st, err := store.Get(c.String("format"))
+			if err != nil {
+				return err
+			}
 			if !info.IsDir() && filepath.Ext(name) == st.Ext() {
 				fmt.Println(name[:len(name)-len(st.Ext())])
 			}
@@ -32,7 +35,10 @@ func list(p string) cli.ActionFunc {
 func generate(c *cli.Context) error {
 	sn := c.String("stage")
 	tn := c.String("task")
-	st := store.New(c.String("format"))
+	st, err := store.Get(c.String("format"))
+	if err != nil {
+		return err
+	}
 	user, err := user.Current()
 	if err != nil {
 		return err
@@ -46,7 +52,7 @@ func generate(c *cli.Context) error {
 			&cmd.Stage{
 				Name:   sn,
 				To:     fmt.Sprintf("/var/www/%s", sn),
-				Scm:    "git",
+				ScmF:   "git",
 				Repo:   "http://github.com/change-me.git",
 				Branch: "master",
 				Files:  []string{"config.toml"},

@@ -7,6 +7,7 @@ import (
 	_ "github.com/itpkg/deploy/cmd/base"
 	_ "github.com/itpkg/deploy/cmd/run"
 	_ "github.com/itpkg/deploy/scm/git"
+	_ "github.com/itpkg/deploy/store/toml"
 )
 
 func main() {

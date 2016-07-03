@@ -1,6 +1,9 @@
 package cmd
 
 import (
+	"path"
+
+	"github.com/itpkg/deploy/scm"
 	"github.com/itpkg/deploy/store"
 	"github.com/op/go-logging"
 	"golang.org/x/crypto/ssh"
@@ -15,7 +18,7 @@ type Stage struct {
 	//The Source Control Management used.
 	//default: :git
 	//Currently :git are supported.
-	Scm string `toml:"scm"` //default git
+	ScmF string `toml:"scm"` //default git
 	//URL to the repository.
 	//Must be a valid URL for the used SCM.
 	Repo string `toml:"repo_url"`
@@ -44,5 +47,13 @@ type Stage struct {
 
 	Logger  *logging.Logger `toml:"-"`
 	Store   store.Store     `toml:"-"`
+	Scm     scm.Scm         `toml:"-"`
 	Signers []ssh.Signer    `toml:"-"`
+
+	Version string `toml:"-"`
+}
+
+//Shared shared path
+func (p *Stage) Shared(n string) string {
+	return path.Join(p.To, "shared", n)
 }
