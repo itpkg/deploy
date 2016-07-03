@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	if err := deploy.Run("rma"); err != nil {
+	if err := deploy.Run("cap"); err != nil {
 		log.Fatal(err)
 	}
 }
