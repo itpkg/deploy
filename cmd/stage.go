@@ -1,7 +1,9 @@
 package cmd
 
 import (
+	"fmt"
 	"path"
+	"sort"
 
 	"github.com/itpkg/deploy/scm"
 	"github.com/itpkg/deploy/store"
@@ -56,4 +58,47 @@ type Stage struct {
 //Shared shared path
 func (p *Stage) Shared(n string) string {
 	return path.Join(p.To, "shared", n)
+}
+
+//Hosts get ordered hosts
+func (p *Stage) Hosts(task *Task, roles, hosts []string) ([]string, error) {
+	if len(roles) == 0 {
+		roles = task.Roles
+	}
+	if len(hosts) == 0 {
+		hosts = task.Hosts
+	}
+
+	all := false
+	for _, r := range roles {
+		if r == "all" {
+			all = true
+			break
+		}
+	}
+
+	if all {
+		for _, hs := range p.Roles {
+			hosts = append(hosts, hs...)
+		}
+	} else {
+		for _, r := range roles {
+			if hs, ok := p.Roles[r]; ok {
+				hosts = append(hosts, hs...)
+			} else {
+				return nil, fmt.Errorf("could not find role %s", r)
+			}
+		}
+	}
+	target := make(map[string]bool)
+	for _, h := range hosts {
+		target[h] = true
+	}
+
+	ret := make([]string, 0)
+	for h, _ := range target {
+		ret = append(ret, h)
+	}
+	sort.Strings(ret)
+	return ret, nil
 }

@@ -7,17 +7,19 @@ import (
 )
 
 func init() {
-	deploy.Register(cli.Command{
-		Name:    "run",
-		Aliases: []string{"r"},
-		Usage:   "run tasks",
-		Flags: []cli.Flag{
-			cmd.FLAG_HOSTS,
-			cmd.FLAG_ROLES,
-			cmd.FLAG_STAGE,
-			cmd.FLAG_TASK,
-			cmd.FLAG_FORMAT,
+	deploy.Register(
+		cli.Command{
+			Name:    "run",
+			Aliases: []string{"r"},
+			Usage:   "run tasks",
+			Flags: []cli.Flag{
+				cmd.FLAG_HOSTS,
+				cmd.FLAG_ROLES,
+				cmd.FLAG_STAGE,
+				cmd.FLAG_TASK,
+				cmd.FLAG_FORMAT,
+			},
+			Action: cmd.Action(run),
 		},
-		Action: cmd.Action(run),
-	})
+	)
 }

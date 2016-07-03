@@ -15,7 +15,7 @@ import (
 	"github.com/urfave/cli"
 )
 
-//Action command action
+//Action command action, need: format, stage
 func Action(fn func(*cli.Context, *Stage) error) cli.ActionFunc {
 	return func(c *cli.Context) error {
 		var st Stage
