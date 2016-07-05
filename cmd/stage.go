@@ -49,7 +49,6 @@ type Stage struct {
 	Keys  []string            `toml:"keys" yaml:"keys"`
 
 	Logger  *logging.Logger `toml:"-" yaml:"-"`
-	Store   store.Store     `toml:"-" yaml:"-"`
 	Scm     scm.Scm         `toml:"-" yaml:"-"`
 	Signers []ssh.Signer    `toml:"-" yaml:"-"`
 
@@ -102,4 +101,25 @@ func (p *Stage) Hosts(task *Task, roles, hosts []string) ([]string, error) {
 	}
 	sort.Strings(ret)
 	return ret, nil
+}
+
+func (p *Stage) String() string {
+	return fmt.Sprintf("%s\t%s", p.Name, p.Description)
+}
+
+//-----------------------------------------------------------------------------
+
+var STAGES = make(map[string]*Stage)
+
+func init() {
+	if err := walk(path.Join("config", "stages"), func(n string, s store.Store) error {
+		var st Stage
+		if err := s.Read(n, &st); err != nil {
+			return err
+		}
+		STAGES[st.Name] = &st
+		return nil
+	}); err != nil {
+		panic(err)
+	}
 }

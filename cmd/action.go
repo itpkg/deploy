@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
-	"path"
 	"reflect"
 	"runtime"
 	"strings"
@@ -13,7 +12,6 @@ import (
 	"golang.org/x/crypto/ssh"
 
 	"github.com/itpkg/deploy/scm"
-	"github.com/itpkg/deploy/store"
 	"github.com/op/go-logging"
 	"github.com/urfave/cli"
 )
@@ -21,27 +19,19 @@ import (
 //Action command action, need: format, stage
 func Action(fn func(*cli.Context, *Stage) error) cli.ActionFunc {
 	return func(c *cli.Context) error {
-		var st Stage
-		var err error
-		sft := c.String("format")
-		if st.Store, err = store.Get(sft); err != nil {
-			return err
-		}
-
-		st.Name = c.String("stage")
-		if len(st.Name) == 0 {
+		sn := c.String("stage")
+		if len(sn) == 0 {
 			name := runtime.FuncForPC(reflect.ValueOf(fn).Pointer()).Name()
 			cli.ShowCommandHelp(c, name[strings.LastIndex(name, ".")+1:])
 			return nil
 		}
-
-		if err = st.Store.Read(
-			path.Join(STAGES, fmt.Sprintf("%s%s", c.String("stage"), st.Store.Ext())),
-			&st); err != nil {
-			return err
+		st, ok := STAGES[sn]
+		if !ok {
+			return fmt.Errorf("can't find stage %s", sn)
 		}
 
 		st.Version = time.Now().Format("20060102150405")
+		var err error
 		if st.Scm, err = scm.Get(st.ScmF); err != nil {
 			return err
 		}
@@ -95,7 +85,7 @@ func Action(fn func(*cli.Context, *Stage) error) cli.ActionFunc {
 			st.Signers = append(st.Signers, sig)
 		}
 
-		err = fn(c, &st)
+		err = fn(c, st)
 		l.Infof("=== END ===")
 		return err
 	}

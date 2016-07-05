@@ -11,7 +11,7 @@ func Run(name string) error {
 	app := cli.NewApp()
 	app.Name = name
 	app.Usage = "Remote multi-server automation tool"
-	app.Version = "v20160702"
+	app.Version = "v20160705"
 	app.Flags = []cli.Flag{}
 
 	app.Commands = commands

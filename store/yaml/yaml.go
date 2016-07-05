@@ -15,7 +15,7 @@ type Yaml struct {
 
 //Ext config file's ext
 func (p *Yaml) Ext() string {
-	return ".toml"
+	return ".yaml"
 }
 
 //Write write object to toml file

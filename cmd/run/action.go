@@ -2,30 +2,27 @@ package run
 
 import (
 	"fmt"
-	"path"
 
 	"github.com/itpkg/deploy/cmd"
 	"github.com/urfave/cli"
 )
 
 func run(c *cli.Context, s *cmd.Stage) error {
-	var task cmd.Task
 	tn := c.String("task")
 	if len(tn) == 0 {
 		cli.ShowCommandHelp(c, "run")
 		return nil
 	}
-	if err := s.Store.Read(
-		path.Join(cmd.TASKS, fmt.Sprintf("%s%s", tn, s.Store.Ext())),
-		&task); err != nil {
-		return err
+	tk, ok := cmd.TASKS[tn]
+	if !ok {
+		return fmt.Errorf("cann't find task %s", tk)
 	}
-	task.Name = tn
-	s.Logger.Infof("task: %s@%s", task.Name, s.Name)
+
+	s.Logger.Infof("task: %s@%s", tk.Name, s.Name)
 	// s.Logger.Infof("roles: %q", c.StringSlice("roles"))
 	// s.Logger.Infof("hosts: %q", c.StringSlice("hosts"))
 	hosts, err := s.Hosts(
-		&task,
+		tk,
 		c.StringSlice("roles"),
 		c.StringSlice("hosts"),
 	)
@@ -35,7 +32,7 @@ func run(c *cli.Context, s *cmd.Stage) error {
 	s.Logger.Debugf("hosts: %q", hosts)
 
 	for _, h := range hosts {
-		if err := Exec(s, h, task.Refresh, task.Script...); err != nil {
+		if err := Exec(s, h, tk.Refresh, tk.Script...); err != nil {
 			return err
 		}
 	}

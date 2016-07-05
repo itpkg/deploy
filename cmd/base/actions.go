@@ -5,32 +5,12 @@ import (
 	"os"
 	"os/user"
 	"path"
-	"path/filepath"
 	"time"
 
 	"github.com/itpkg/deploy/cmd"
 	"github.com/itpkg/deploy/store"
 	"github.com/urfave/cli"
 )
-
-func list(p string, f func(*cli.Context, string, string) error) cli.ActionFunc {
-	return func(c *cli.Context) error {
-		return filepath.Walk(p, func(path string, info os.FileInfo, err error) error {
-			if err != nil {
-				return err
-			}
-			name := info.Name()
-			st, err := store.Get(c.String("format"))
-			if err != nil {
-				return err
-			}
-			if !info.IsDir() && filepath.Ext(name) == st.Ext() {
-				return f(c, path, name[:len(name)-len(st.Ext())])
-			}
-			return nil
-		})
-	}
-}
 
 func generate(c *cli.Context) error {
 	sn := c.String("stage")
@@ -45,7 +25,7 @@ func generate(c *cli.Context) error {
 	}
 
 	if sn != "" {
-		fn := path.Join(cmd.STAGES, fmt.Sprintf("%s%s", sn, st.Ext()))
+		fn := path.Join("config", "stages", fmt.Sprintf("%s%s", sn, st.Ext()))
 		fmt.Printf("generate file %s\n", fn)
 		if err := st.Write(
 			fn,
@@ -78,7 +58,7 @@ func generate(c *cli.Context) error {
 	}
 
 	if tn != "" {
-		fn := path.Join(cmd.TASKS, fmt.Sprintf("%s%s", tn, st.Ext()))
+		fn := path.Join("config", "task", fmt.Sprintf("%s%s", tn, st.Ext()))
 		fmt.Printf("generate file %s\n", fn)
 		if err := st.Write(
 			fn,
