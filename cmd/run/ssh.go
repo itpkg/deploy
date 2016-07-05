@@ -11,7 +11,7 @@ import (
 )
 
 //Exec run scripts on host
-func Exec(stage *cmd.Stage, host string, deploy bool, scripts ...string) error {
+func Exec(stage *cmd.Stage, host string, refresh bool, scripts ...string) error {
 
 	job := stage.Scm.Clone()
 	job = append(job,
@@ -29,7 +29,7 @@ func Exec(stage *cmd.Stage, host string, deploy bool, scripts ...string) error {
 	job = append(job, "ln -s {{.To}}/shared/* {{.To}}/{{.Version}}")
 	job = append(job, scripts...)
 
-	if deploy {
+	if refresh {
 		job = append(
 			job,
 			"cd {{.To}} && ln -sfn {{.Version}} current",

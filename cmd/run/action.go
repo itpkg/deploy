@@ -31,7 +31,7 @@ func run(c *cli.Context, s *cmd.Stage) error {
 	s.Logger.Debugf("hosts: %q", hosts)
 
 	for _, h := range hosts {
-		if err := Exec(s, h, task.Deploy, task.Script...); err != nil {
+		if err := Exec(s, h, task.Refresh, task.Script...); err != nil {
 			return err
 		}
 	}

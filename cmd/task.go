@@ -4,8 +4,8 @@ package cmd
 type Task struct {
 	Name        string   `toml:"-"`
 	Description string   `toml:"description"`
+	Refresh     bool     `toml:"refresh"`
 	Hosts       []string `toml:"hosts"`
 	Roles       []string `toml:"roles"`
 	Script      []string `toml:"script"`
-	Deploy      bool     `toml:"deploy"`
 }
