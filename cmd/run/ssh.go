@@ -36,8 +36,8 @@ func Exec(stage *cmd.Stage, host string, deploy bool, scripts ...string) error {
 			fmt.Sprintf(
 				//`cd {{.To}} && $(find . -maxdepth 1 -name '20*' | wc -l) -lt %d || find . -maxdepth 1 -name '20*' | sort -r | tail -n +%d | tr '\n' '\0' |  xargs -0 rm -r --`,
 				`cd {{.To}} && test $(find . -maxdepth 1 -name '20*' | wc -l) -lt %d || find . -maxdepth 1 -name '20*' | sort -r | tail -n +%d | tr '\n' '\0' |  xargs -0 rm -r --`,
-				stage.Keep,
-				stage.Keep,
+				stage.Keep+1,
+				stage.Keep+1,
 			),
 		)
 	}
