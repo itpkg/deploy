@@ -15,7 +15,7 @@ import (
 func generate(c *cli.Context) error {
 	sn := c.String("stage")
 	tn := c.String("task")
-	st, err := store.Get(c.String("format"))
+	st, err := store.Get("." + c.String("format"))
 	if err != nil {
 		return err
 	}
@@ -58,7 +58,7 @@ func generate(c *cli.Context) error {
 	}
 
 	if tn != "" {
-		fn := path.Join("config", "task", fmt.Sprintf("%s%s", tn, st.Ext()))
+		fn := path.Join("config", "tasks", fmt.Sprintf("%s%s", tn, st.Ext()))
 		fmt.Printf("generate file %s\n", fn)
 		if err := st.Write(
 			fn,

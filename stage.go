@@ -6,13 +6,13 @@ import (
 	"sort"
 
 	"github.com/itpkg/deploy/scm"
-	"github.com/itpkg/deploy/store"
 	"github.com/op/go-logging"
 	"golang.org/x/crypto/ssh"
 )
 
 //Stage load from config/stages/<name>.toml
 type Stage struct {
+	File        string `toml:"-" yaml:"-"`
 	Name        string `toml:"name" yaml:"name"`
 	Description string `toml:"description" yaml:"description"`
 	//The path on the remote server where the application should be deployed.
@@ -110,16 +110,3 @@ func (p *Stage) String() string {
 //-----------------------------------------------------------------------------
 
 var STAGES = make(map[string]*Stage)
-
-func loadStages() {
-	if err := walk(path.Join("config", "stages"), func(n string, s store.Store) error {
-		var st Stage
-		if err := s.Read(n, &st); err != nil {
-			return err
-		}
-		STAGES[st.Name] = &st
-		return nil
-	}); err != nil {
-		panic(err)
-	}
-}

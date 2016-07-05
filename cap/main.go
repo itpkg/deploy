@@ -12,7 +12,11 @@ import (
 )
 
 func main() {
-	if err := deploy.Run("cap"); err != nil {
+	err := deploy.Load()
+	if err == nil {
+		err = deploy.Run("cap")
+	}
+	if err != nil {
 		log.Fatal(err)
 	}
 }

@@ -19,6 +19,7 @@ import (
 //Action command action, need: format, stage
 func Action(fn func(*cli.Context, *Stage) error) cli.ActionFunc {
 	return func(c *cli.Context) error {
+
 		sn := c.String("stage")
 		if len(sn) == 0 {
 			name := runtime.FuncForPC(reflect.ValueOf(fn).Pointer()).Name()

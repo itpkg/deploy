@@ -1,14 +1,10 @@
 package deploy
 
-import (
-	"fmt"
-	"path"
-
-	"github.com/itpkg/deploy/store"
-)
+import "fmt"
 
 //Task load from config/tasks/name>.toml
 type Task struct {
+	File        string   `toml:"-" yaml:"-"`
 	Name        string   `toml:"name" yaml:"name"`
 	Description string   `toml:"description" yaml:"description"`
 	Refresh     bool     `toml:"refresh" yaml:"refresh"`
@@ -23,17 +19,3 @@ func (p *Task) String() string {
 
 //-----------------------------------------------------------------------------
 var TASKS = make(map[string]*Task)
-
-func loadTasks() {
-
-	if err := walk(path.Join("config", "tasks"), func(n string, s store.Store) error {
-		var tk Task
-		if err := s.Read(n, &tk); err != nil {
-			return err
-		}
-		TASKS[tk.Name] = &tk
-		return nil
-	}); err != nil {
-		panic(err)
-	}
-}

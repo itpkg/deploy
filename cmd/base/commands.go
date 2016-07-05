@@ -38,8 +38,8 @@ func init() {
 			Usage:   "show all tasks",
 			Action: func(*cli.Context) error {
 				fmt.Println("NAME\tDESCRIPTION")
-				for _, s := range deploy.STAGES {
-					fmt.Println(s)
+				for _, t := range deploy.TASKS {
+					fmt.Println(t)
 				}
 				return nil
 			},
