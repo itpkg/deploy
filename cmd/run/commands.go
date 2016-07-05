@@ -2,7 +2,6 @@ package run
 
 import (
 	"github.com/itpkg/deploy"
-	"github.com/itpkg/deploy/cmd"
 	"github.com/urfave/cli"
 )
 
@@ -13,13 +12,12 @@ func init() {
 			Aliases: []string{"r"},
 			Usage:   "run tasks",
 			Flags: []cli.Flag{
-				cmd.FLAG_HOSTS,
-				cmd.FLAG_ROLES,
-				cmd.FLAG_STAGE,
-				cmd.FLAG_TASK,
-				cmd.FLAG_FORMAT,
+				deploy.FLAG_HOSTS,
+				deploy.FLAG_ROLES,
+				deploy.FLAG_STAGE,
+				deploy.FLAG_TASK,
 			},
-			Action: cmd.Action(run),
+			Action: deploy.Action(run),
 		},
 	)
 }

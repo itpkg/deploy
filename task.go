@@ -1,4 +1,4 @@
-package cmd
+package deploy
 
 import (
 	"fmt"
@@ -24,7 +24,7 @@ func (p *Task) String() string {
 //-----------------------------------------------------------------------------
 var TASKS = make(map[string]*Task)
 
-func init() {
+func loadTasks() {
 
 	if err := walk(path.Join("config", "tasks"), func(n string, s store.Store) error {
 		var tk Task

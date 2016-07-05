@@ -1,4 +1,4 @@
-package cmd
+package deploy
 
 import (
 	"fmt"
@@ -111,7 +111,7 @@ func (p *Stage) String() string {
 
 var STAGES = make(map[string]*Stage)
 
-func init() {
+func loadStages() {
 	if err := walk(path.Join("config", "stages"), func(n string, s store.Store) error {
 		var st Stage
 		if err := s.Read(n, &st); err != nil {

@@ -3,17 +3,17 @@ package run
 import (
 	"fmt"
 
-	"github.com/itpkg/deploy/cmd"
+	"github.com/itpkg/deploy"
 	"github.com/urfave/cli"
 )
 
-func run(c *cli.Context, s *cmd.Stage) error {
+func run(c *cli.Context, s *deploy.Stage) error {
 	tn := c.String("task")
 	if len(tn) == 0 {
 		cli.ShowCommandHelp(c, "run")
 		return nil
 	}
-	tk, ok := cmd.TASKS[tn]
+	tk, ok := deploy.TASKS[tn]
 	if !ok {
 		return fmt.Errorf("cann't find task %s", tk)
 	}

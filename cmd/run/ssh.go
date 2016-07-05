@@ -6,12 +6,12 @@ import (
 	"html/template"
 	"strings"
 
-	"github.com/itpkg/deploy/cmd"
+	"github.com/itpkg/deploy"
 	"golang.org/x/crypto/ssh"
 )
 
 //Exec run scripts on host
-func Exec(stage *cmd.Stage, host string, refresh bool, scripts ...string) error {
+func Exec(stage *deploy.Stage, host string, refresh bool, scripts ...string) error {
 
 	job := stage.Scm.Clone()
 	job = append(job,

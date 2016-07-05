@@ -7,7 +7,7 @@ import (
 	"path"
 	"time"
 
-	"github.com/itpkg/deploy/cmd"
+	"github.com/itpkg/deploy"
 	"github.com/itpkg/deploy/store"
 	"github.com/urfave/cli"
 )
@@ -29,7 +29,7 @@ func generate(c *cli.Context) error {
 		fmt.Printf("generate file %s\n", fn)
 		if err := st.Write(
 			fn,
-			&cmd.Stage{
+			&deploy.Stage{
 				Name:        sn,
 				Description: "change me",
 				To:          fmt.Sprintf("/var/www/%s", sn),
@@ -62,7 +62,7 @@ func generate(c *cli.Context) error {
 		fmt.Printf("generate file %s\n", fn)
 		if err := st.Write(
 			fn,
-			&cmd.Task{
+			&deploy.Task{
 				Name:        tn,
 				Description: "change me",
 				Roles:       []string{"web", "app"},
