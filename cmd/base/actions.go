@@ -13,7 +13,7 @@ import (
 	"github.com/urfave/cli"
 )
 
-func list(p string) cli.ActionFunc {
+func list(p string, f func(*cli.Context, string, string) error) cli.ActionFunc {
 	return func(c *cli.Context) error {
 		return filepath.Walk(p, func(path string, info os.FileInfo, err error) error {
 			if err != nil {
@@ -25,7 +25,7 @@ func list(p string) cli.ActionFunc {
 				return err
 			}
 			if !info.IsDir() && filepath.Ext(name) == st.Ext() {
-				fmt.Println(name[:len(name)-len(st.Ext())])
+				return f(c, path, name[:len(name)-len(st.Ext())])
 			}
 			return nil
 		})
@@ -50,13 +50,14 @@ func generate(c *cli.Context) error {
 		if err := st.Write(
 			fn,
 			&cmd.Stage{
-				Name:   sn,
-				To:     fmt.Sprintf("/var/www/%s", sn),
-				ScmF:   "git",
-				Repo:   "http://github.com/change-me.git",
-				Branch: "master",
-				Files:  []string{"config.toml"},
-				Dirs:   []string{"logs", "public", "tmp"},
+				Name:        sn,
+				Description: "change me",
+				To:          fmt.Sprintf("/var/www/%s", sn),
+				ScmF:        "git",
+				Repo:        "http://github.com/change-me.git",
+				Branch:      "master",
+				Files:       []string{"config.toml"},
+				Dirs:        []string{"logs", "public", "tmp"},
 				Env: map[string]string{
 					"created": time.Now().String(),
 				},
@@ -82,10 +83,11 @@ func generate(c *cli.Context) error {
 		if err := st.Write(
 			fn,
 			&cmd.Task{
-				Name:   tn,
-				Roles:  []string{"web", "app"},
-				Hosts:  []string{"deploy@host1.com", "deploy@host2.com"},
-				Script: []string{"uname -a", "whoami", "echo {{.Name}}"},
+				Name:        tn,
+				Description: "change me",
+				Roles:       []string{"web", "app"},
+				Hosts:       []string{"deploy@host1.com", "deploy@host2.com"},
+				Script:      []string{"uname -a", "whoami", "echo {{.Name}}"},
 			},
 		); err != nil {
 			return err

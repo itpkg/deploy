@@ -13,7 +13,8 @@ import (
 
 //Stage load from config/stages/<name>.toml
 type Stage struct {
-	Name string `toml:"-"`
+	Name        string `toml:"-"`
+	Description string `toml:"description"`
 	//The path on the remote server where the application should be deployed.
 	//default "/var/www/{{.Name}}"
 	To string `toml:"deploy_to"`

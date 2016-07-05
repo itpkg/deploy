@@ -1,21 +1,14 @@
 hash: d97285c7bfa88751074fbc49284da1f1cfe8c40f33936b7fc4f9d5f544a6156a
-updated: 2016-07-02T14:00:39.066232604-07:00
+updated: 2016-07-05T10:47:50.137988904-07:00
 imports:
 - name: github.com/BurntSushi/toml
   version: f0aeabca5a127c4078abb8c8d64298b147264b55
-- name: github.com/itpkg/deploy
-  version: 9c3b8fa659e736cfef5d0531bad69fcca4946f35
-  subpackages:
-  - cmd
-  - cmd/run
-  - scm/git
-  - scm
 - name: github.com/op/go-logging
   version: 970db520ece77730c7e4724c61121037378659d9
 - name: github.com/urfave/cli
   version: 1efa31f08b9333f1bd4882d61f9d668a70cd902e
 - name: golang.org/x/crypto
-  version: 811831de4c4dd03a0b8737233af3b36852386373
+  version: 0c565bf13221fb55497d7ae2bb95694db1fd1bff
   subpackages:
   - ssh
   - curve25519
