@@ -17,19 +17,19 @@ var FLAG_FORMAT = cli.StringFlag{
 	Name:   "format,f",
 	Value:  "toml",
 	Usage:  "file format, like: toml, yaml",
-	EnvVar: "STAGE",
+	EnvVar: "FORMAT",
 }
 
 var FLAG_STAGE = cli.StringFlag{
 	Name:   "stage,s",
-	Value:  "test",
+	Value:  "",
 	Usage:  "stage name like: production, development, test",
 	EnvVar: "STAGE",
 }
 
 var FLAG_TASK = cli.StringFlag{
 	Name:   "task,t",
-	Value:  "hello",
+	Value:  "",
 	Usage:  "task's name",
 	EnvVar: "TASK",
 }

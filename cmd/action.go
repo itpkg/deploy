@@ -5,6 +5,9 @@ import (
 	"io/ioutil"
 	"os"
 	"path"
+	"reflect"
+	"runtime"
+	"strings"
 	"time"
 
 	"golang.org/x/crypto/ssh"
@@ -25,12 +28,19 @@ func Action(fn func(*cli.Context, *Stage) error) cli.ActionFunc {
 			return err
 		}
 
+		st.Name = c.String("stage")
+		if len(st.Name) == 0 {
+			name := runtime.FuncForPC(reflect.ValueOf(fn).Pointer()).Name()
+			cli.ShowCommandHelp(c, name[strings.LastIndex(name, ".")+1:])
+			return nil
+		}
+
 		if err = st.Store.Read(
 			path.Join(STAGES, fmt.Sprintf("%s%s", c.String("stage"), st.Store.Ext())),
 			&st); err != nil {
 			return err
 		}
-		st.Name = c.String("stage")
+
 		st.Version = time.Now().Format("20060102150405")
 		if st.Scm, err = scm.Get(st.ScmF); err != nil {
 			return err

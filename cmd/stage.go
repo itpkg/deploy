@@ -13,47 +13,47 @@ import (
 
 //Stage load from config/stages/<name>.toml
 type Stage struct {
-	Name        string `toml:"-"`
-	Description string `toml:"description"`
+	Name        string `toml:"name" yaml:"name"`
+	Description string `toml:"description" yaml:"description"`
 	//The path on the remote server where the application should be deployed.
 	//default "/var/www/{{.Name}}"
-	To string `toml:"deploy_to"`
+	To string `toml:"deploy_to" yaml:"deploy_to"`
 	//The Source Control Management used.
 	//default: :git
 	//Currently :git are supported.
-	ScmF string `toml:"scm"` //default git
+	ScmF string `toml:"scm" yaml:"scm"` //default git
 	//URL to the repository.
 	//Must be a valid URL for the used SCM.
-	Repo string `toml:"repo_url"`
+	Repo string `toml:"repo_url" yaml:"repo_url"`
 	//default master
-	Branch string `toml:"branch"`
+	Branch string `toml:"branch" yaml:"branch"`
 	//Listed files will be symlinked into each release directory during deployment.
 	//default []
-	Files []string `toml:"linked_files"`
+	Files []string `toml:"linked_files" yaml:"linked_files"`
 	//Listed directories will be symlinked into the release directory during deployment.
 	//default []
-	Dirs []string `toml:"linked_dirs"`
+	Dirs []string `toml:"linked_dirs" yaml:"linked_dirs"`
 	//Default shell environment used during command execution.
 	//default {}
-	Env map[string]string `toml:"default_env"`
+	Env map[string]string `toml:"default_env" yaml:"default_env"`
 	//The last n releases are kept for possible rollbacks.
 	//default 5
-	Keep uint `toml:"keep_releases"`
+	Keep uint `toml:"keep_releases" yaml:"keep_releases"`
 	//Temporary directory used during deployments to store data.
 	//default /tmp
-	Tmp   string `toml:"tmp"`
-	Debug bool   `toml:"debug"`
+	Tmp   string `toml:"tmp" yaml:"tmp"`
+	Debug bool   `toml:"debug" yaml:"debug"`
 
 	//split hosts by roles
-	Roles map[string][]string `toml:"roles"`
-	Keys  []string            `toml:"keys"`
+	Roles map[string][]string `toml:"roles" yaml:"roles"`
+	Keys  []string            `toml:"keys" yaml:"keys"`
 
-	Logger  *logging.Logger `toml:"-"`
-	Store   store.Store     `toml:"-"`
-	Scm     scm.Scm         `toml:"-"`
-	Signers []ssh.Signer    `toml:"-"`
+	Logger  *logging.Logger `toml:"-" yaml:"-"`
+	Store   store.Store     `toml:"-" yaml:"-"`
+	Scm     scm.Scm         `toml:"-" yaml:"-"`
+	Signers []ssh.Signer    `toml:"-" yaml:"-"`
 
-	Version string `toml:"-"`
+	Version string `toml:"-" yaml:"-"`
 }
 
 //Shared shared path

@@ -1,8 +1,18 @@
-hash: d97285c7bfa88751074fbc49284da1f1cfe8c40f33936b7fc4f9d5f544a6156a
-updated: 2016-07-05T10:47:50.137988904-07:00
+hash: 1eb19b641b30dfbee34f5d37667423cdf96bb8c9431baf774d31ac2fe39faa8d
+updated: 2016-07-05T11:41:37.198815691-07:00
 imports:
 - name: github.com/BurntSushi/toml
   version: f0aeabca5a127c4078abb8c8d64298b147264b55
+- name: github.com/itpkg/deploy
+  version: 9fe4e424b238f2af0ab61bfe36461ce51050b032
+  subpackages:
+  - cmd/base
+  - cmd/run
+  - scm/git
+  - store/toml
+  - scm
+  - store
+  - cmd
 - name: github.com/op/go-logging
   version: 970db520ece77730c7e4724c61121037378659d9
 - name: github.com/urfave/cli
@@ -14,4 +24,6 @@ imports:
   - curve25519
   - ed25519
   - ed25519/internal/edwards25519
+- name: gopkg.in/yaml.v2
+  version: a83829b6f1293c91addabc89d0571c246397bbf4
 testImports: []

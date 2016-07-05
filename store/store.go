@@ -30,5 +30,5 @@ func Get(n string) (Store, error) {
 	if o {
 		return s, nil
 	}
-	return nil, fmt.Errorf("bad name %s", n)
+	return nil, fmt.Errorf("bad format name %s", n)
 }

@@ -11,6 +11,10 @@ import (
 func run(c *cli.Context, s *cmd.Stage) error {
 	var task cmd.Task
 	tn := c.String("task")
+	if len(tn) == 0 {
+		cli.ShowCommandHelp(c, "run")
+		return nil
+	}
 	if err := s.Store.Read(
 		path.Join(cmd.TASKS, fmt.Sprintf("%s%s", tn, s.Store.Ext())),
 		&task); err != nil {

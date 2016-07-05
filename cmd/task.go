@@ -2,10 +2,10 @@ package cmd
 
 //Task load from config/tasks/name>.toml
 type Task struct {
-	Name        string   `toml:"-"`
-	Description string   `toml:"description"`
-	Refresh     bool     `toml:"refresh"`
-	Hosts       []string `toml:"hosts"`
-	Roles       []string `toml:"roles"`
-	Script      []string `toml:"script"`
+	Name        string   `toml:"name" yaml:"name"`
+	Description string   `toml:"description" yaml:"description"`
+	Refresh     bool     `toml:"refresh" yaml:"refresh"`
+	Hosts       []string `toml:"hosts" yaml:"hosts"`
+	Roles       []string `toml:"roles" yaml:"roles"`
+	Script      []string `toml:"script" yaml:"script"`
 }
